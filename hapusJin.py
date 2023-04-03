@@ -1,0 +1,3 @@
+def hapusJin():
+    #Hapus
+    return
