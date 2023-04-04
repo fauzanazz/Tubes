@@ -1,3 +1,10 @@
-def jinPengumpul():
+from PythonFunction import *
+
+def jinPengumpul(seeds,pasir,air,batu):
+    localSeeds = seeds
     #! Random Algorithm
-    print(f"Jin menemukan {pasir} pasir, {batu} batu, dan {air} air.")
+    localpasir,localSeeds = rando(localSeeds,5)
+    localbatu,localSeeds = rando(localSeeds,5)
+    localair,localSeeds = rando(localSeeds,5)
+    print(f"Jin menemukan {localpasir} pasir, {localbatu} batu, dan {localair} air.")
+    return localpasir+pasir, localbatu+batu, localair+air, localSeeds

@@ -1,0 +1,2 @@
+def ayamBerkokok():
+    return

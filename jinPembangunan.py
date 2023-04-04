@@ -1,12 +1,13 @@
+from PythonFunction import *
+
 def cekJumlahBahanBangunan(jumlahYangDiperlukan,jumlahYangDimiliki):
-    for i in range (3):
-        if jumlahYangDimiliki[i] < jumlahYangDiperlukan[i]:
-            return False
+    if jumlahYangDimiliki[i] < jumlahYangDiperlukan[i]:
+        return False
     return True
             
-def jinPembangun():
+def jinPembangun(seeds):
     #! Random Algoritma
-    
+    rando(seeds,5)
     if cekJumlahBahanBangunan() and JumlahCandiSisa != 0:
         print("Candi berhasil dibangun.")
         print(f"Sisa candi yang perlu dibangun: {jumlahCandiSisa}")
