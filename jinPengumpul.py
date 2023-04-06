@@ -1,10 +1,32 @@
-from PythonFunction import *
+import PythonFunction as f
+import database as db
 
-def jinPengumpul(seeds,pasir,air,batu):
-    localSeeds = seeds
+def jinPengumpul():
+    
     #! Random Algorithm
-    localpasir,localSeeds = rando(localSeeds,5)
-    localbatu,localSeeds = rando(localSeeds,5)
-    localair,localSeeds = rando(localSeeds,5)
+    localpasir= f.rando(5)
+    localbatu= f.rando(5)
+    localair= f.rando(5)
+    
+    #Output
     print(f"Jin menemukan {localpasir} pasir, {localbatu} batu, dan {localair} air.")
-    return localpasir+pasir, localbatu+batu, localair+air, localSeeds
+    
+    #Masukkan data ke database
+    db.pasir += localpasir
+    db.batu += localbatu 
+    db.air += localair
+    return
+
+def jinPengumpulOveride(pasir,batu,air):
+    
+    #! Random Algorithm
+    localpasir = f.rando(5)
+    localbatu= f.rando(5)
+    localair= f.rando(5)
+    
+    #Masukkan data ke database
+    db.pasir += localpasir
+    db.batu += localbatu 
+    db.air += localair
+    
+    return localpasir+pasir,localbatu+batu,localair+air

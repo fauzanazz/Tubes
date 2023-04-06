@@ -10,12 +10,12 @@ import database as db
 from PythonFunction import *
 
 #! Import Function
-from loginLogout import *
-from osCommand import *
-from adminCommands import *
-from roroCommands import *
-from jinPembangunan import *
-from jinPengumpul import *
+import loginLogout as login
+import osCommand as osCommand
+import adminCommands as admin
+import roroCommands as roro
+import jinPembangun as jinBangun
+import jinPengumpul as jinKumpul
 
 #* Exit File -------------------------------------------#
 run = True
@@ -64,12 +64,6 @@ class style():
     ENDC = '\033[0m'
     BOLD = '\033[1m'
 
-#* Local Storage ----------------------------------------------#
-role = None; users = db.usersOutput; 
-bahanBangunan = db.bahanBangunanOutput; candi = db.candiOutput
-seeds = db.seedsOutput; pasir = db.pasir
-batu = db.batu; air = db.air; jumlahCandi = db.jumlahCandi
-
 #* Input  -----------------------------------------------#
 
 while run:
@@ -77,62 +71,63 @@ while run:
 
     match phase:
         case "debug":
-            print(f'''Role = {role}
-                  users = {users}
-                  candi = {candi}
-                  bahanBangunan = {bahanBangunan}
-                  seeds = {seeds}
-                  pasir = {pasir}
-                  batu = {batu}
-                  air = {air}
-                  jumlahCandi = {jumlahCandi}''')
+            print(f'''Role = {db.role}
+                  username = {db.username}
+                  users = {db.users}
+                  candi = {db.candi}
+                  bahanBangunan = {db.bahanBangunan}
+                  seeds = {db.seeds}
+                  pasir = {db.pasir}
+                  batu = {db.batu}
+                  air = {db.air}
+                  jumlahCandi = {db.jumlahCandi}''')
         
         case "login":
-            role = login(users)
+            role = login.login()
             
         case "logout":
-            role = logout()
+            role = login.logout()
             
         case "summonjin":
             os.system('cls')
-            users = summonJin(users)
+            admin.summonJin()
             
         case "hapusjin":
-            (users,candi) = hapusJin(users,candi)
+            admin.hapusJin()
             
         case "ubahjin":
-            ubahJin(users)
+            admin.ubahJin()
             
         case "bangun":
-            jinPembangun(seeds)
+            jinBangun.jinPembangun()
             
         case "kumpul":
-            pasir,batu,air,seeds[1][1] = jinPengumpul(int(seeds[1][1]),pasir,batu,air)
+            jinKumpul.jinPengumpul()
             
         case "batchkumpul":
-            batchKumpul()
+            admin.batchKumpul()
             
         case "batchbangun":
-            batchBangun()
+            admin.batchBangun()
             
         case "laporanjin":
-            laporanJin()
+            admin.laporanJin()
             
         case "laporancandi":
-            laporanCandi()
+            admin.laporanCandi()
             
         case "hancurkancandi":
-            hancurkanCandi()
+            roro.hancurkanCandi()
             
         case "ayamberkokok":
-            ayamBerkokok()
+            roro.ayamBerkokok()
     
         case "save":
-            saveFile(users,candi,bahanBangunan,seeds,air,pasir,batu)
+            osCommand.saveFile()
             
         case "help":
-            printHelp()
+            osCommand.printHelp()
             
         case "exit":
-            exitCode(users,candi,bahanBangunan,seeds,air,pasir,batu)
+            osCommand.exitCode()
             break

@@ -1,4 +1,4 @@
-from PythonFunction import *
+import PythonFunction as f
 
 #* Open data  -------------------------------------------------------#
 users = open("Assets/user.csv", "r")
@@ -12,13 +12,13 @@ seeds = open("Assets/seeds.csv", "r")
 readfile = users.read() # input File
 
 # Algoritma CSV to array
-users = (bagiArrayString(readfile,'\n'))
+users = (f.bagiArrayString(readfile,'\n'))
 
 # Container
 
-usersOutput = ['' for i in range (panjang(users)-1)]
-for i in range (panjang(users)-1):
-    usersOutput[i] = (bagiArrayString(users[i],';'))
+usersOutput = ['' for i in range (f.panjang(users)-1)]
+for i in range (f.panjang(users)-1):
+    usersOutput[i] = (f.bagiArrayString(users[i],';'))
 
 
 
@@ -26,12 +26,12 @@ for i in range (panjang(users)-1):
 readfile = candi.read() # input File
 
 # Algoritma CSV to array
-candi = (bagiArrayString(readfile,'\n'))
+candi = (f.bagiArrayString(readfile,'\n'))
 
 # Container
-candiOutput = ['' for i in range (panjang(candi)-1)]
-for i in range (panjang(candi)-1):
-    candiOutput[i] = (bagiArrayString(candi[i],';'))
+candiOutput = ['' for i in range (f.panjang(candi)-1)]
+for i in range (f.panjang(candi)-1):
+    candiOutput[i] = (f.bagiArrayString(candi[i],';'))
 
 
 
@@ -39,12 +39,12 @@ for i in range (panjang(candi)-1):
 readfile = bahan_bangunan.read() # input File
 
 # Algoritma CSV to array
-bahan_bangunan = (bagiArrayString(readfile,'\n'))
+bahan_bangunan = (f.bagiArrayString(readfile,'\n'))
 
 # Container
-bahanBangunanOutput = ['' for i in range (panjang(bahan_bangunan)-1)]
-for i in range (panjang(bahan_bangunan)-1):
-    bahanBangunanOutput[i] = (bagiArrayString(bahan_bangunan[i],';'))
+bahanBangunanOutput = ['' for i in range (f.panjang(bahan_bangunan)-1)]
+for i in range (f.panjang(bahan_bangunan)-1):
+    bahanBangunanOutput[i] = (f.bagiArrayString(bahan_bangunan[i],';'))
     
     
     
@@ -52,18 +52,24 @@ for i in range (panjang(bahan_bangunan)-1):
 readfile = seeds.read() # input File
 
 # Algoritma CSV to array
-seeds = (bagiArrayString(readfile,'\n'))
+seeds = (f.bagiArrayString(readfile,'\n'))
 
 # Container
-seedsOutput = ['' for i in range (panjang(seeds)-1)]
-for i in range (panjang(seeds)-1):
-    seedsOutput[i] = (bagiArrayString(seeds[i],';'))
+seedsOutput = ['' for i in range (f.panjang(seeds)-1)]
+for i in range (f.panjang(seeds)-1):
+    seedsOutput[i] = (f.bagiArrayString(seeds[i],';'))
+
+#* Local Storage ----------------------------------------------#
+
+role = None; username = None; 
+users = usersOutput; bahanBangunan = bahanBangunanOutput; candi = candiOutput
+seeds = seedsOutput;
 
 #*--------------------------------------------------------------------------#
 #Penghitung jumlah jin
 jumlahJinPemabangun = 0
 jumlahJinPengumpul = 0
-for i in range(1,panjang(usersOutput[2])):
+for i in range(1,f.panjang(usersOutput[2])):
     if users[i][2] == "jin_pembangun":
         jumlahJinPemabangun += 1
     elif users[i][2] == "jin_pengumpul":
@@ -74,16 +80,53 @@ for i in range(1,panjang(usersOutput[2])):
 pasir = 0
 batu = 0
 air = 0
-for i in range(panjang(bahanBangunanOutput)):
+
+for i in range(f.panjang(bahanBangunanOutput)):
     if bahanBangunanOutput[i][0] == "pasir":
         pasir += int(bahanBangunanOutput[i][2])
     elif bahanBangunanOutput[i][0] == "batu":
         batu += int(bahanBangunanOutput[i][2])
     elif bahanBangunanOutput[i][0] == "air":
         air += int(bahanBangunanOutput[i][2])
+
+# Penghitung jumlah bahan bangunan Terpakai
+pasirTerpakai = 0
+batuTerpakai = 0
+airTerpakai = 0
+jumlahCandi = 0
+candiTermahal = (0,0)
+candiTermurah = (0,0)
+
+
+if f.panjang(candi) > 2:
+    for i in range(1,f.panjang(candi)):
+        pasirTerpakai += int(candi[i][2])
+        batuTerpakai += int(candi[i][3])
+        airTerpakai += int(candi[i][4])
+        jumlahCandi += 1
+        
+        if i == 1:
+            candiTermahal = (int(candi[i][5]),i)
+            candiTermurah = (int(candi[i][5]),i)
+        
+        if candiTermahal[0] < int(candi[i][5]):
+            candiTermahal = (int(candi[i][5]),i)
+            
+        if candiTermurah[0] > int(candi[i][5]):   
+            candiTermurah = (int(candi[i][5]),i)
+            
+    # if candiTermahal == candiTermurah:
+    #     candiTermahal = "-"
+    #     candiTerrmurah = "-"      
+        
         
 #*--------------------------------------------------------------------------#
 # Penghitung jumlah Candi
-jumlahCandi = 0
-for i in candiOutput:
-    jumlahCandi += 1
+
+#*--------------------------------------------------------------------------#
+# Algoritma Jin Terajin
+
+#*--------------------------------------------------------------------------#
+# Algrotima Jin Termalas
+
+

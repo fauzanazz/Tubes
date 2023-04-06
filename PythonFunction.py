@@ -1,4 +1,5 @@
 # pythonFunction.py
+import database as db
 
 #! Fungsi Bagi Array String
 # Kegunaanya untuk membagi inputan CSV yang masih dalam bentuk string panjang menjadi array dalam array yang sesuai dengan baris dan kolomnya.
@@ -56,7 +57,9 @@ def tambahArrayString(array1,array2):
 def toArray(value):
     array = [value]
     return array
+
 #*---------------------------------------------------------------------------------------#
+
 #! Fungsi Panjang
 # Kegunannya untuk menghitung panjang dari suatu variabel
 #* Param x adalah diisi dengan variabel yang akan dicari panjangnya.
@@ -70,7 +73,9 @@ def panjang(x):
     for i in (x):
         sum += 1
     return sum
+
 #*---------------------------------------------------------------------------------------#
+
 #! Fungsi Remove
 # Kegunannya untuk menghapus elemen suatu array.
 #* Param arr adalah array yang akan di hapus elemennya, param index adalah integer index dari arr yang akan kita hapus.
@@ -86,7 +91,9 @@ def remove(arr,index):
     for i in range(index,panjang(arr)-1):
         output[i] = arr[i+1]
     return output
+
 #*---------------------------------------------------------------------------------------#
+
 #! Fungsi random
 # Kegunannya untuk Mengeluarkan angka random sesuai range (0..range)
 #* Param seeds adalah angka spesial yang menentukan pola linear randomNumber, param range adalah pengali untuk menentukan range dari (0..range)
@@ -100,14 +107,19 @@ def remove(arr,index):
 # x = ((a*seeds)+c) % m
 
 # LNG Algorithm
-def rando(seeds,range):
-    x = ((1231 * seeds) + 0) % (2**31)
-    localseeds = x
+def rando(range):
+    x = ((1231 * int(db.seeds[1][1])) + 0) % (2**31)
+    db.seeds[1][1] = x
     rng = ((x/(2*10**9))) #Pembulatan agar mendekati range (0..1)
     
     #! Case Handler bila rng > 1, agar tidak lewat range yang ditentukan.
     if rng > 1:
         rng = 1
         
-    rng = rng * range
-    return int(rng),localseeds
+    #* Pengali range     
+    rng = (rng * range)+1
+    
+    #! Case Handler bilangan rng melewati range dibatas 1 angka
+    if rng > range:
+        rng = range
+    return int(rng)

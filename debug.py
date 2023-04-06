@@ -1,4 +1,4 @@
-from PythonFunction import *
+import PythonFunction as f
 import numpy as np
 import os
 
@@ -51,18 +51,19 @@ import os
 
 
 # RNG  
-# a = 1231
-# m = (2**31)
-# c = 0
-# seeds = 230404
-# x = [0 for i in range(2)]
-# countarray = [0 for i in range (7)]
-# for i in range(100):
-#     x[0] = ((a*seeds)+c)%m
-#     rng = (((x[0]/(2*10**9))*5)+1)//1
-#     seeds = x[0]
-#     print(rng)
-#     countarray[int(rng)] += 1
+a = 1231
+m = (2**31)
+c = 0
+seeds = 230404
+x = [0 for i in range(2)]
+countarray = [0 for i in range (7)]
+for i in range(100):
+    x[0] = ((a*seeds)+c)%m
+    rng = (((x[0]/(2*10**9))*5)+1)//1
+    seeds = x[0]
+    print(rng)
+    countarray[int(rng)] += 1
+print(countarray)
 
 # print(countarray)
 # users = open("Assets/user.csv", "r")
@@ -110,28 +111,30 @@ import os
 # print(tambahArrayString([1,2,3],[3,4,4]))
 
 
-# x = ((1231*230404)+0) % (2**31)
-# seeds = x
-# rng = ((x/(2*10**9))*5)//1
+# x = ((1231 * 230404) + 0) % (2**31)
+# localseeds = x
+# rng = ((x/(2*10**9))) #Pembulatan agar mendekati range (0..1)
 
+# #! Case Handler bila rng > 1, agar tidak lewat range yang ditentukan.
 # if rng > 1:
 #     rng = 1
-
+    
+# rng = (rng * range)+1
 # print(rng)
 
-bahan_bangunan = open("Assets/bahan_bangunan.csv", "r")
-readfile = bahan_bangunan.read() # input File
+# bahan_bangunan = open("Assets/bahan_bangunan.csv", "r")
+# readfile = bahan_bangunan.read() # input File
 
-# Algoritma CSV to array
-bahan_bangunan = (bagiArrayString(readfile,'\n'))
+# # Algoritma CSV to array
+# bahan_bangunan = (bagiArrayString(readfile,'\n'))
 
-# Container
-bahanBangunanOutput = ['' for i in range (panjang(bahan_bangunan)-1)]
-for i in range (panjang(bahan_bangunan)-1):
-    bahanBangunanOutput[i] = (bagiArrayString(bahan_bangunan[i],';'))
+# # Container
+# bahanBangunanOutput = ['' for i in range (panjang(bahan_bangunan)-1)]
+# for i in range (panjang(bahan_bangunan)-1):
+#     bahanBangunanOutput[i] = (bagiArrayString(bahan_bangunan[i],';'))
 
-print (readfile)
-print (bahanBangunanOutput)
+# print (readfile)
+# print (bahanBangunanOutput)
 # print (bagiArrayString(bahanBangunanOutput[0],';'))
 # print (bagiArrayString(bahanBangunanOutput[1],';'))
 # print (bagiArrayString(bahanBangunanOutput[2],';'))
