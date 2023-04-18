@@ -4,7 +4,7 @@ import database as db
 def jinPengumpul():
     
     #! Random Algorithm
-    localpasir= f.rando(5)
+    localpasir= f.rando(5,db.seeds[1][1])
     localbatu= f.rando(5)
     localair= f.rando(5)
     

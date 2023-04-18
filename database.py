@@ -1,94 +1,144 @@
 import PythonFunction as f
 
-#* Open data  -------------------------------------------------------#
-users = open("Assets/user.csv", "r")
-candi = open("Assets/candi.csv", "r")
-bahan_bangunan = open("Assets/bahan_bangunan.csv", "r")
-seeds = open("Assets/seeds.csv", "r")
-
-#* Parse CSV to Array -----------------------------------------------#
-
-# Users
-readfile = users.read() # input File
-
-# Algoritma CSV to array
-users = (f.bagiArrayString(readfile,'\n'))
-
-# Container
-
-usersOutput = ['' for i in range (f.panjang(users)-1)]
-for i in range (f.panjang(users)-1):
-    usersOutput[i] = (f.bagiArrayString(users[i],';'))
-
-
-
-# Candi
-readfile = candi.read() # input File
-
-# Algoritma CSV to array
-candi = (f.bagiArrayString(readfile,'\n'))
-
-# Container
-candiOutput = ['' for i in range (f.panjang(candi)-1)]
-for i in range (f.panjang(candi)-1):
-    candiOutput[i] = (f.bagiArrayString(candi[i],';'))
-
-
-
-# Bahan bangunan
-readfile = bahan_bangunan.read() # input File
-
-# Algoritma CSV to array
-bahan_bangunan = (f.bagiArrayString(readfile,'\n'))
-
-# Container
-bahanBangunanOutput = ['' for i in range (f.panjang(bahan_bangunan)-1)]
-for i in range (f.panjang(bahan_bangunan)-1):
-    bahanBangunanOutput[i] = (f.bagiArrayString(bahan_bangunan[i],';'))
+def load(nama_folder):
     
+    #* Container  -------------------------------------------------------#
+    usersArray = [[''for i in range (4)] for j in range(1000)]
+    candiArray = [[''for i in range (6)] for j in range(100)]
+    bahanBangunanArray = [[''for i in range (3)]for j in range(3)]
+    seedsArray = [[0 for i in range (2)] for j in range(1)]
     
-    
-# Seeds
-readfile = seeds.read() # input File
+    #* Open data  -------------------------------------------------------#
+    users = open(f"{nama_folder}/user.csv", "r")
+    candi = open(f"{nama_folder}/candi.csv", "r")
+    bahan_bangunan = open(f"{nama_folder}/bahan_bangunan.csv", "r")
+    seeds = open(f"{nama_folder}/seeds.csv", "r")
 
-# Algoritma CSV to array
-seeds = (f.bagiArrayString(readfile,'\n'))
+    #* Parse CSV to Array -----------------------------------------------#
 
-# Container
-seedsOutput = ['' for i in range (f.panjang(seeds)-1)]
-for i in range (f.panjang(seeds)-1):
-    seedsOutput[i] = (f.bagiArrayString(seeds[i],';'))
+    # Users Load
+    temp = users.readline()
+    for i in range (1000):
+        temp = users.readline()
+        if (temp == '.'):
+            break
+        
+        k = 0
+        row = ''
+        for j in range(len(temp)):
+            if temp[j] == ';' or temp[j] == '\n':
+                usersArray[i][k] = row
+                k += 1 
+                row = ''
+            else:
+                row += temp[j]
+    users.close()
 
+    # Candi Load
+    temp = candi.readline()
+    for i in range (100):
+        temp = candi.readline()
+        
+        if (temp == '.'):
+            break
+        
+        k = 0
+        row = ''
+        for j in range(len(temp)):
+            if temp[j] == ';' or temp[j] == '\n':
+                candiArray[i][k] = row
+                k += 1 
+                row = ''
+            else:
+                row += temp[j]
+    candi.close()
+
+    # bahan bangunan Load
+    temp = bahan_bangunan.readline()
+    for i in range (3):
+        temp = bahan_bangunan.readline()
+        
+        if (temp == '.'):
+            break
+        
+        k = 0
+        row = ''
+        for j in range(len(temp)):
+            if temp[j] == ';' or temp[j] == '\n':
+                bahanBangunanArray[i][k] = row
+                k += 1 
+                row = ''
+            elif temp[j] == '\n':
+                bahanBangunanArray[i][k] = row
+            else:
+                row += temp[j]
+    bahan_bangunan.close()
+
+    # seeds Load
+    temp = seeds.readline()
+    for i in range (1):
+        temp = seeds.readline()
+        
+        if (temp == '.'):
+            break
+        
+        k = 0
+        row = ''
+        for j in range(len(temp)):
+            if temp[j] == ';' or temp[j] == '\n':
+                seedsArray[i][k] = row
+                k += 1 
+                row = ''
+            else:
+                row += temp[j]
+    seeds.close()
+    return seedsArray, usersArray, candiArray,bahanBangunanArray
 #* Local Storage ----------------------------------------------#
 
 role = None; username = None; 
-users = usersOutput; bahanBangunan = bahanBangunanOutput; candi = candiOutput
-seeds = seedsOutput;
+seeds = []; users = []; candi = []; bahanBangunan = []
+jumlahCandi = 0
+
+def hitung():
+    pasirTerpakai,batuTerpakai,airTerpakai,jumlahCandi,candiTermahal,candiTermurah = hitungJumlahBahanBangunanTerpakai()
+    jumlahPasir,jumlahBatu,jumlahAir = hitungJumlahBahanBangunan()
+    jumlahJinPembangun,jumlahJinPengumpul = hitungJumlahJin()
+    return jumlahPasir,jumlahBatu,jumlahAir,jumlahJinPembangun,jumlahJinPengumpul,pasirTerpakai,batuTerpakai,airTerpakai,jumlahCandi,candiTermahal,candiTermurah
 
 #*--------------------------------------------------------------------------#
 #Penghitung jumlah jin
-jumlahJinPemabangun = 0
+jumlahJinPembangun = 0
 jumlahJinPengumpul = 0
-for i in range(1,f.panjang(usersOutput[2])):
-    if users[i][2] == "jin_pembangun":
-        jumlahJinPemabangun += 1
-    elif users[i][2] == "jin_pengumpul":
-        jumlahJinPemabangun += 1
+
+def hitungJumlahJin():
+    jumlahJinPembangun = 0
+    jumlahJinPengumpul = 0
+    for i in range(1000):
+        if users[i][2] == "jin_pembangun":
+            jumlahJinPembangun += 1
+        elif users[i][2] == "jin_pengumpul":
+            jumlahJinPembangun += 1
+    return jumlahJinPembangun,jumlahJinPengumpul
         
 #*--------------------------------------------------------------------------#
 # Penghitung jumlah bahan bangunan
-pasir = 0
-batu = 0
-air = 0
+jumlahPasir = 0
+jumlahBatu = 0
+jumlahAir = 0
 
-for i in range(f.panjang(bahanBangunanOutput)):
-    if bahanBangunanOutput[i][0] == "pasir":
-        pasir += int(bahanBangunanOutput[i][2])
-    elif bahanBangunanOutput[i][0] == "batu":
-        batu += int(bahanBangunanOutput[i][2])
-    elif bahanBangunanOutput[i][0] == "air":
-        air += int(bahanBangunanOutput[i][2])
-
+def hitungJumlahBahanBangunan():
+    jumlahPasir = 0
+    jumlahBatu = 0
+    jumlahAir = 0
+    for i in range(3):
+        if bahanBangunan[i][0] == "pasir":
+            jumlahPasir += int(bahanBangunan[i][2])
+        elif bahanBangunan[i][0] == "batu":
+            jumlahBatu += int(bahanBangunan[i][2])
+        elif bahanBangunan[i][0] == "air":
+            jumlahAir += int(bahanBangunan[i][2])
+    return jumlahPasir,jumlahBatu,jumlahAir
+        
 # Penghitung jumlah bahan bangunan Terpakai
 pasirTerpakai = 0
 batuTerpakai = 0
@@ -97,13 +147,20 @@ jumlahCandi = 0
 candiTermahal = (0,0)
 candiTermurah = (0,0)
 
-
-if f.panjang(candi) > 2:
-    for i in range(1,f.panjang(candi)):
+def hitungJumlahBahanBangunanTerpakai():
+    pasirTerpakai = 0
+    batuTerpakai = 0
+    airTerpakai = 0
+    jumlahCandi = 0
+    candiTermahal = (0,0)
+    candiTermurah = (0,0)
+    for i in range(100):
         pasirTerpakai += int(candi[i][2])
         batuTerpakai += int(candi[i][3])
         airTerpakai += int(candi[i][4])
-        jumlahCandi += 1
+        
+        if candi[i][5] != '0': 
+            jumlahCandi += 1
         
         if i == 1:
             candiTermahal = (int(candi[i][5]),i)
@@ -114,10 +171,7 @@ if f.panjang(candi) > 2:
             
         if candiTermurah[0] > int(candi[i][5]):   
             candiTermurah = (int(candi[i][5]),i)
-            
-    # if candiTermahal == candiTermurah:
-    #     candiTermahal = "-"
-    #     candiTerrmurah = "-"      
+    return pasirTerpakai,batuTerpakai,airTerpakai,jumlahCandi,candiTermahal,candiTermurah
         
         
 #*--------------------------------------------------------------------------#
